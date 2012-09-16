@@ -34,7 +34,6 @@
 @end
 
 @implementation TESTSViewController
-
 - (void)viewDidLoad{
     [super viewDidLoad];
     [self reloadImages:nil];
@@ -57,28 +56,14 @@
     self.imageOriginal.frame = CGRectMake(0, 0, imageFromInternet.size.width, imageFromInternet.size.height);
     self.imageOriginal.image = imageFromInternet;
     
-    int x_min, x_max, y_min, y_max;
-    x_min = y_min = INT_MAX;
-    x_max = y_max = 0;
-    NSLog(@"Iniciando");
-    for (int x = 0; x <= CGImageGetWidth(imageFromInternet.CGImage); x++){
-        for (int y = 0; y <= CGImageGetHeight(imageFromInternet.CGImage); y++){
-            if (![self isWhite:imageFromInternet coord_x:x coord_y:y]){
-                if (x < x_min)  x_min = x;
-                if (x > x_max)  x_max = x;
-                if (y < y_min)  y_min = y;
-                if (y > y_max)  y_max = y;
-            }
-        }
-    }
-    NSLog(@"Finalizando");
     
-    UIImage *imageCropped = [imageFromInternet crop:CGRectMake(x_min, y_min, (x_max - x_min), (y_max - y_min))];
+    UIImage *imageCropped = [imageFromInternet crop:[self usefulRectangle:imageFromInternet]];
     self.imageCutted.frame = CGRectMake(0, self.imageOriginal.frame.size.height + 10, imageCropped.size.width, imageCropped.size.height);
     self.imageCutted.image = imageCropped;
 }
 
--(BOOL)isWhite:(UIImage *)imageIn coord_x:(int)coord_x coord_y:(int)coord_y{
+
+-(CGRect)usefulRectangle:(UIImage *)imageIn{
     CGImageRef image = imageIn.CGImage;
     NSUInteger width = CGImageGetWidth(image);
     NSUInteger height = CGImageGetHeight(image);
@@ -93,12 +78,29 @@
     CGContextDrawImage(context, CGRectMake(0, 0, width, height), image);
     CGContextRelease(context);
     
-    int byteIndex = (bytesPerRow * coord_y) + coord_x * bytesPerPixel;
-    CGFloat red = rawData[byteIndex];
-    CGFloat green = rawData[byteIndex + 1];
-    CGFloat blue = rawData[byteIndex + 2];
-    CGFloat alpha = rawData[byteIndex + 3];
+    int x_min, x_max, y_min, y_max;
+    x_min = y_min = INT_MAX;
+    x_max = y_max = 0;
+    NSLog(@"Iniciando");
+    for (int x = 0; x <= CGImageGetWidth(image); x++){
+        for (int y = 0; y <= CGImageGetHeight(image); y++){
+            int byteIndex = (bytesPerRow * y) + x * bytesPerPixel;
+            CGFloat red = rawData[byteIndex];
+            CGFloat green = rawData[byteIndex + 1];
+            CGFloat blue = rawData[byteIndex + 2];
+//            CGFloat alpha = rawData[byteIndex + 3];
+            
+            CGFloat sumRGBA = red + green + blue;
+            if (sumRGBA < 704){    // (255 * 3) * 0.92
+                if (x < x_min)  x_min = x;
+                if (x > x_max)  x_max = x;
+                if (y < y_min)  y_min = y;
+                if (y > y_max)  y_max = y;
+            }
+        }
+    }
+    NSLog(@"Finalizando");
     
-    return (red == 255. && green == 255. && blue == 255. && alpha == 255.);
+    return CGRectMake(x_min, y_min, (x_max - x_min), (y_max - y_min));
 }
 @end
