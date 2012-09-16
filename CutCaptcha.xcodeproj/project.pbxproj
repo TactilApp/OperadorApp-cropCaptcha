@@ -241,7 +241,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CutCaptcha/CutCaptcha-Prefix.pch";
 				INFOPLIST_FILE = "CutCaptcha/CutCaptcha-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos6.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -252,7 +254,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CutCaptcha/CutCaptcha-Prefix.pch";
 				INFOPLIST_FILE = "CutCaptcha/CutCaptcha-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos6.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -276,6 +280,7 @@
 				CFBE6DB916065A540034812A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
