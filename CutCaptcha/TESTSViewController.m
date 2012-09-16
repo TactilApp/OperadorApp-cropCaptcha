@@ -56,10 +56,31 @@
     self.imageOriginal.frame = CGRectMake(0, 0, imageFromInternet.size.width, imageFromInternet.size.height);
     self.imageOriginal.image = imageFromInternet;
     
-    
-    UIImage *imageCropped = [imageFromInternet crop:[self usefulRectangle:imageFromInternet]];
+    CGRect rectToCrop = [self usefulRectangle:imageFromInternet];
+    UIImage *imageCropped = [imageFromInternet crop:rectToCrop];
     self.imageCutted.frame = CGRectMake(0, self.imageOriginal.frame.size.height + 10, imageCropped.size.width, imageCropped.size.height);
     self.imageCutted.image = imageCropped;
+    
+    for (UIView *subview in [self.imageOriginal subviews]){
+        [subview removeFromSuperview];
+    }
+    
+    UIView *point = [[[UIView alloc] initWithFrame:CGRectMake(rectToCrop.origin.x, rectToCrop.origin.y, 2, 2)] autorelease];
+    point.backgroundColor = [UIColor redColor];
+    [self.imageOriginal addSubview:point];
+    
+    UIView *point2 = [[[UIView alloc] initWithFrame:CGRectMake(rectToCrop.origin.x + rectToCrop.size.width, rectToCrop.origin.y, 2, 2)] autorelease];
+    point2.backgroundColor = [UIColor redColor];
+    [self.imageOriginal addSubview:point2];
+    
+    UIView *point3 = [[[UIView alloc] initWithFrame:CGRectMake(rectToCrop.origin.x, rectToCrop.origin.y + rectToCrop.size.height, 2, 2)] autorelease];
+    point3.backgroundColor = [UIColor redColor];
+    [self.imageOriginal addSubview:point3];
+    
+    
+    UIView *point4 = [[[UIView alloc] initWithFrame:CGRectMake(rectToCrop.origin.x + rectToCrop.size.width, rectToCrop.origin.y + rectToCrop.size.height, 2, 2)] autorelease];
+    point4.backgroundColor = [UIColor redColor];
+    [self.imageOriginal addSubview:point4];
 }
 
 
