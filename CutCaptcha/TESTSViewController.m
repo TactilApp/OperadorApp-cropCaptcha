@@ -102,14 +102,14 @@
     int x_min, x_max, y_min, y_max;
     x_min = y_min = INT_MAX;
     x_max = y_max = 0;
-    NSLog(@"Iniciando");
+    
     for (int x = 0; x < CGImageGetWidth(image); x++){
         for (int y = 0; y < CGImageGetHeight(image); y++){
             int byteIndex = (bytesPerRow * y) + x * bytesPerPixel;
             CGFloat red = rawData[byteIndex];
             CGFloat green = rawData[byteIndex + 1];
             CGFloat blue = rawData[byteIndex + 2];
-//            CGFloat alpha = rawData[byteIndex + 3];
+            CGFloat alpha = rawData[byteIndex + 3]; //  It will not be used
             
             CGFloat sumRGBA = red + green + blue;
             if (sumRGBA < 725){    // (255 * 3) * 0.95
@@ -120,7 +120,6 @@
             }
         }
     }
-    NSLog(@"Finalizando");
     
     return CGRectMake(x_min, y_min, (x_max - x_min)+1, (y_max - y_min)+1);
 }
