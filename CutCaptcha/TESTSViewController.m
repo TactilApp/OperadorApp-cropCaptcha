@@ -109,7 +109,7 @@
             CGFloat red = rawData[byteIndex];
             CGFloat green = rawData[byteIndex + 1];
             CGFloat blue = rawData[byteIndex + 2];
-            CGFloat alpha = rawData[byteIndex + 3]; //  It will not be used
+//          CGFloat alpha = rawData[byteIndex + 3]; //  It will not be used
             
             CGFloat sumRGBA = red + green + blue;
             if (sumRGBA < 725){    // (255 * 3) * 0.95
@@ -120,7 +120,7 @@
             }
         }
     }
-    
+    free(rawData);
     return CGRectMake(x_min, y_min, (x_max - x_min)+1, (y_max - y_min)+1);
 }
 @end
